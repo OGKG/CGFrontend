@@ -2,11 +2,15 @@ import { Button, Form, Divider } from 'antd';
 import GrahamTable from './inputs/grahamTable';
 import Point from "./inputs/point"
 import PointList from "./inputs/pointList"
+import Mark from "./mark";
 import { useParams } from 'react-router-dom';
+import { useState } from 'react';
+
 
 // const {TextArea} = Input
 
 const Graham = () => {
+    const [mark, setMark] = useState(null);
     const[form] = Form.useForm();
     const params = useParams();
 
@@ -41,13 +45,14 @@ const Graham = () => {
         };
         fetch(`http://127.0.0.1:8000/graham-task/${params.grahamTaskId}`, requestOptions)
             .then(response => response.json())
-            .then(data => console.log(data));
+            .then(data => setMark(data[0]));
         console.log(JSON.stringify(mapData(values)))
         // console.log(values)
         
     }
 
     return (
+  <>
     <Form
     form={form}
     layout="vertical"
@@ -66,6 +71,8 @@ const Graham = () => {
         <Button htmlType="submit" type="primary">Send</Button>
       </Form.Item>
     </Form>
+    <Mark mark={mark}/>
+    </>  
     )
 };
 
